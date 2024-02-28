@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container mt-3 p-4" style="background-color: #f8f9fa; border-radius: 5px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
+    <div class="text-center mb-4">
+        <p class="text-warning" style="font-size: 18px; border: 1px solid #ffc107; border-radius: 5px; padding: 10px; background-color: #fffbe6;">
+            Careful! This action will clear the knowledgebase and you will need to retrain the bot.
+        </p>
+    </div>
+    
+    <div class="d-flex justify-content-center">
+        <button id="clearBtn" class="btn btn-danger">Clear</button>
+        <!-- Spinner -->
+        <div id="spinner" class="spinner-border text-primary" role="status" style="display: none; margin-left: 10px;">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+    <!-- Flash message container -->
+    <div id="flashMessage" class="alert" style="display: none; margin-top: 20px;"></div>
+</div>
+
+<script>
+    document.getElementById("clearBtn").addEventListener("click", function() {
+        const spinner = document.getElementById("spinner");
+        const flashMessage = document.getElementById("flashMessage");
+        spinner.style.display = "block"; // Show spinner
+        
+        fetch('/reset_vectorstore/', {
+            method: 'GET', // or 'POST' if your API requires
+        })
+        .then(response => response.json())
+        .then(data => {
+            spinner.style.display = "none"; // Hide spinner
+            
+            if (data.success) {
+                // Display success message
+                flashMessage.className = "alert alert-success";
+                flashMessage.innerText = data.success;
+                flashMessage.style.display = "block";
+                
+                // Redirect after 5 seconds
+                setTimeout(() => {
+                    window.location.href = "/process-docs-page/";
+                }, 5000);
+            } else if (data.Error) {
+                // Display error message
+                flashMessage.className = "alert alert-danger";
+                flashMessage.innerText = data.Error;
+                flashMessage.style.display = "block";
+                
+                // Stay on the same page, remove flash message after 5 seconds
+                setTimeout(() => {
+                    flashMessage.style.display = "none";
+                }, 5000);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            spinner.style.display = "none"; // Hide spinner
+            // Handle fetch error (e.g., API not reachable)
+            flashMessage.className = "alert alert-danger";
+            flashMessage.innerText = "An error occurred while processing your request.";
+            flashMessage.style.display = "block";
+            
+            setTimeout(() => {
+                flashMessage.style.display = "none";
+            }, 5000);
+        });
+    });
+</script>
+
+{% endblock %}
