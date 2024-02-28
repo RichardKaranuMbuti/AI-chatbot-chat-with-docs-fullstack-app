@@ -80,18 +80,23 @@ WSGI_APPLICATION = "ai_chatbot.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
+from dotenv import load_dotenv
+load_dotenv()
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+environ = os.getenv("environment")
+if environ == "development":
+
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",
+        }
     }
-}
 
-'''
+
 # Production Database Configs
 
-from dbsettings import ENGINE, NAME, USER, PASSWORD, HOST, PORT
+from .dbsettings import ENGINE, NAME, USER, PASSWORD, HOST, PORT
 
 DATABASES = {
     'default': {
@@ -106,7 +111,7 @@ DATABASES = {
         },
     }
 }
-'''
+
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
