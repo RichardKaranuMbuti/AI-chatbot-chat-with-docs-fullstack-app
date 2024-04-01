@@ -93,24 +93,24 @@ if environ == "development":
         }
     }
 
+else:
+    # Production Database Configs
 
-# Production Database Configs
+    from .dbsettings import ENGINE, NAME, USER, PASSWORD, HOST, PORT
 
-from .dbsettings import ENGINE, NAME, USER, PASSWORD, HOST, PORT
-
-DATABASES = {
-    'default': {
-        'ENGINE': ENGINE,
-        'NAME': NAME,
-        'USER': USER,
-        'PASSWORD': PASSWORD,
-        'HOST': HOST,
-        'PORT': PORT,
-        'OPTIONS': {
-            'init_command': 'SET sql_mode="STRICT_TRANS_TABLES"',
-        },
+    DATABASES = {
+        'default': {
+            'ENGINE': ENGINE,
+            'NAME': NAME,
+            'USER': USER,
+            'PASSWORD': PASSWORD,
+            'HOST': HOST,
+            'PORT': PORT,
+            'OPTIONS': {
+                'init_command': 'SET sql_mode="STRICT_TRANS_TABLES"',
+            },
+        }
     }
-}
 
 
 # Password validation

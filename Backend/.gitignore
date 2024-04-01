@@ -3,4 +3,4 @@ venv/
 
 chroma_db/
 media/
-ddsettings.py
+dbsettings.py
