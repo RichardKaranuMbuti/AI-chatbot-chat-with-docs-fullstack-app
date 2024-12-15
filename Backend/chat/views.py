@@ -135,11 +135,10 @@ import os
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from dotenv import load_dotenv
-from langchain.embeddings import OpenAIEmbeddings
+from langchain_openai import OpenAIEmbeddings
 from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain.llms import OpenAI
-from langchain.document_loaders import TextLoader, DirectoryLoader
-from langchain.vectorstores import Chroma
+from langchain_community.chat_models import ChatOpenAI
+from langchain_chroma import Chroma
 from langchain_community.document_loaders import PyPDFDirectoryLoader
 
 
@@ -201,7 +200,7 @@ def document_search_view(request):
         embedding_function = OpenAIEmbeddings(model='text-embedding-ada-002', openai_api_key=OPENAI_API_KEY)
         db3 = Chroma(persist_directory="./chroma_db", embedding_function=embedding_function)
         retriever = db3.as_retriever(search_kwargs={"k": 10})
-        docs = retriever.get_relevant_documents(query) # Here we are filtering documents with similar meaning to the query
+        docs = retriever.invoke(query) # Here we are filtering documents with similar meaning to the query
         llm = ChatOpenAI(model_name="gpt-3.5-turbo", temperature=0)
 
         # Create a ConversationBufferMemory object

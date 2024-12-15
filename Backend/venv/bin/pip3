@@ -1,4 +1,4 @@
-#!/home/acelogic/AI-Chatbots/AI-chatbot-chat-with-docs-fullstack-app/Backend/venv/bin/python
+#!/home/acelogic/Chatbots/AI-chatbot-chat-with-docs-fullstack-app/Backend/venv/bin/python3
 # -*- coding: utf-8 -*-
 import re
 import sys
